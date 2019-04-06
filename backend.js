@@ -14,77 +14,59 @@ app.use(express.json());
 
 // Star Wars Characters (DATA)
 // =============================================================
-var characters = [
-  {
-    routeName: "yoda",
-    name: "Yoda",
-    role: "Jedi Master",
-    age: 900,
-    forcePoints: 2000
-  },
-  {
-    routeName: "darthmaul",
-    name: "Darth Maul",
-    role: "Sith Lord",
-    age: 200,
-    forcePoints: 1200
-  },
-  {
-    routeName: "obiwankenobi",
-    name: "Obi Wan Kenobi",
-    role: "Jedi Master",
-    age: 55,
-    forcePoints: 1350
-  }
-];
+var reservations = [];
+var waitinglist = [];
 
 // Routes
 // =============================================================
 
-// Basic route that sends the user first to the AJAX Page
-app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "view.html"));
-});
+//Basic route that sends the user first to the AJAX Page
+// app.get("/", function(req, res) {
+//   res.sendFile(path.join(__dirname, "view.html"));
+// });
 
-app.get("/add", function(req, res) {
-  res.sendFile(path.join(__dirname, "add.html"));
-});
+// app.get("/index", function(req, res) {
+//   res.sendFile(path.join(__dirname, "index.html"));
+// });
 
 // Displays all characters
-app.get("/api/characters", function(req, res) {
-  return res.json(characters);
+app.get("/api/reservations", function(req, res) {
+  return res.json(reservations);
+});
+app.get("/api/waitinglist", function(req, res) {
+  return res.json(waitinglist);
 });
 
-// Displays a single character, or returns false
-app.get("/api/characters/:character", function(req, res) {
-  var chosen = req.params.character;
+// // Displays a single character, or returns false
+// app.get("/api/reservations/:reservation", function(req, res) {
+//   var chosen = req.params.reservation;
 
-  console.log(chosen);
+//   console.log(chosen);
 
-  for (var i = 0; i < characters.length; i++) {
-    if (chosen === characters[i].routeName) {
-      return res.json(characters[i]);
-    }
-  }
+//   for (var i = 0; i < reservations.length; i++) {
+//     if (chosen === reservations[i].routeName) {
+//       return res.json(reservations[i]);
+//     }
+//   }
 
-  return res.json(false);
-});
+//   return res.json(false);
+// });
 
 // Create New Characters - takes in JSON input
-app.post("/api/characters", function(req, res) {
+app.post("/api/reservations", function(req, res) {
   // req.body hosts is equal to the JSON post sent from the user
   // This works because of our body parsing middleware
-  var newcharacter = req.body;
+  var newreservation = req.body;
 
-  // Using a RegEx Pattern to remove spaces from newCharacter
-  // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
-  newcharacter.routeName = newcharacter.name.replace(/\s+/g, "").toLowerCase();
+  console.log(newreservation);
 
-  console.log(newcharacter);
-
-  characters.push(newcharacter);
-
-  res.json(newcharacter);
+  if (reservations.length < 5) {
+    //   return res.json(reservations[i]);
+    reservations.push(newreservation);
+  } else {
+    waitinglist.push(newreservation);
+  }
+  res.json(newreservation);
 });
 
 // Starts the server to begin listening

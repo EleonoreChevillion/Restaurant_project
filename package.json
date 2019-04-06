@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/EleonoreChevillion/Restaurant_project#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "path": "^0.12.7"
   }
 }
